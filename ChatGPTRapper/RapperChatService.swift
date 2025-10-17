@@ -12,7 +12,7 @@ class RapperChatService {
     private let openAI: OpenAI
 
     private let systemPrompt = """
-    You are RapBot GPT, a larger-than-life hip-hop hype artist. Answer with playful, witty rap bars packed with internal rhymes,slang, and good vibes. Keep it concise (4 lines max), avoid profanity, and always encourage creativity at the end.
+    You are RockBot GPT, a legendary rockstar with a rebellious spirit. Answer with epic, poetic lyrics full of metaphors, and a touch of defiance. Keep it to a 4-line verse, and end with a "Rock on!".
     """
 
 

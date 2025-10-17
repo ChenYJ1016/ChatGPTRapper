@@ -12,7 +12,7 @@ import UIKit
       
       private let promptField: UITextField = {
           let field = UITextField()
-          field.placeholder = "Ask the rap mentor…"
+          field.placeholder = "What's your anthem?"
           field.borderStyle = .roundedRect
           field.returnKeyType = .send
           return field
@@ -20,7 +20,11 @@ import UIKit
 
       private let sendButton: UIButton = {
           let button = UIButton(type: .system)
-          button.setTitle("Hit it!", for: .normal)
+          button.setTitle("Rock it!", for: .normal)
+          button.backgroundColor = UIColor.red
+          button.tintColor = .white
+          button.layer.cornerRadius = 8
+          button.titleLabel?.font = .boldSystemFont(ofSize: 16)
           return button
       }()
 
@@ -32,23 +36,24 @@ import UIKit
           textView.font = .preferredFont(forTextStyle: .body)
           textView.backgroundColor = .secondarySystemBackground
           textView.layer.cornerRadius = 12
-          textView.layer.borderWidth = 1
-          textView.layer.borderColor = UIColor.separator.cgColor
+          textView.layer.shadowColor = UIColor.black.cgColor
+          textView.layer.shadowOffset = CGSize(width: 0, height: 2)
+          textView.layer.shadowOpacity = 0.2
+          textView.layer.shadowRadius = 4
           textView.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
           return textView
       }()
 
       override func viewDidLoad() {
           super.viewDidLoad()
-          view.backgroundColor = .systemBackground
+          setupGradientBackground()
 
           let stack = UIStackView(arrangedSubviews: [promptField, sendButton, responseView])
           stack.axis = .vertical
-          stack.spacing = 16
+          stack.spacing = 20
           stack.translatesAutoresizingMaskIntoConstraints = false
 
-          title = "RapBot 🎤🤖"
-          view.backgroundColor = .systemBackground
+          title = "RockBot 🎸🤘"
           
           setupNavigationBar()
           initialiseService()
@@ -58,20 +63,37 @@ import UIKit
           NSLayoutConstraint.activate([
               stack.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
               stack.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-              stack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
-              responseView.heightAnchor.constraint(greaterThanOrEqualToConstant: 220)
+              stack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+              responseView.heightAnchor.constraint(greaterThanOrEqualToConstant: 250)
           ])
 
           sendButton.addTarget(self, action: #selector(sendTapped), for: .touchUpInside)
       }
       
+      private func setupGradientBackground() {
+          let gradientLayer = CAGradientLayer()
+          gradientLayer.frame = view.bounds
+          gradientLayer.colors = [
+              UIColor.orange.cgColor,
+              UIColor.red.cgColor
+          ]
+          view.layer.insertSublayer(gradientLayer, at: 0)
+      }
+      
+      override func viewDidLayoutSubviews() {
+          super.viewDidLayoutSubviews()
+          if let gradientLayer = view.layer.sublayers?.first as? CAGradientLayer {
+              gradientLayer.frame = view.bounds
+          }
+      }
+      
       private func setupNavigationBar(){
           let appearance = UINavigationBarAppearance()
           appearance.configureWithOpaqueBackground()
-          appearance.backgroundColor = .brown
+          appearance.backgroundColor = UIColor.orange
           
-          appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white, .font: UIFont.boldSystemFont(ofSize: 30)]
-          appearance.titleTextAttributes = [.foregroundColor: UIColor.white, .font: UIFont.systemFont(ofSize: 30, weight: .semibold)]
+          appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white, .font: UIFont.boldSystemFont(ofSize: 32)]
+          appearance.titleTextAttributes = [.foregroundColor: UIColor.white, .font: UIFont.systemFont(ofSize: 24, weight: .semibold)]
           
             
           navigationController?.navigationBar.standardAppearance = appearance
